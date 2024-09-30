@@ -18,7 +18,7 @@ pool:
 
 # 各ブランチ用job
 
-jobs: MainBrancheJob
+- jobs: MainBrancheJob
   condition: eq(variables.isMain, true)
   variables:
     SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
@@ -38,7 +38,7 @@ jobs: MainBrancheJob
   - script: |
     sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
 
-jobs: ReleaseBrancheJob
+- jobs: ReleaseBrancheJob
   condition: eq(variables.isRelease, true)
   variables:
     SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
@@ -58,7 +58,7 @@ jobs: ReleaseBrancheJob
   - script: |
     sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
 
-jobs: DevelopBrancheJob
+- jobs: DevelopBrancheJob
   condition: eq(variables.isDevelop, true)
   variables:
     SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
@@ -78,7 +78,7 @@ jobs: DevelopBrancheJob
   - script: |
     sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
 
-jobs: WorkBrancheJob
+- jobs: WorkBrancheJob
   condition: eq(variables.isWork, true)
   variables:
     SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
