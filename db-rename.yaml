@@ -19,8 +19,8 @@ pool:
 # 各ブランチ用job
 
 jobs: Main branche job
+  condition: eq(variables.isMain, true)
   steps:
-    condition: eq(variables.isMain, true)
     env:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
@@ -39,8 +39,8 @@ jobs: Main branche job
       sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
 
 jobs: Release branche job
+  condition: eq(variables.isRelease, true)
   steps:
-    condition: eq(variables.isRelease, true)
     env:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
@@ -59,8 +59,8 @@ jobs: Release branche job
       sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
 
 jobs: Develop branche job
+  condition: eq(variables.isDevelop, true)
   steps:
-    condition: eq(variables.isDevelop, true)
     env:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
@@ -79,8 +79,8 @@ jobs: Develop branche job
       sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
 
 jobs: Work branche job
+  condition: eq(variables.isWork, true)
   steps:
-    condition: eq(variables.isWork, true)
     env:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
