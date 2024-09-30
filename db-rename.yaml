@@ -17,7 +17,7 @@ pool:
   vmImage: $(vmImageName)
 
 # 各ブランチ用job
-
+jobs:
 - jobs: MainBrancheJob
   condition: eq(variables.isMain, true)
   variables:
