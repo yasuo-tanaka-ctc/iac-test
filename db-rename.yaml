@@ -1,26 +1,60 @@
+# パイプラインを実行するトリガーブランチ名
 trigger:
-- none
+  - main
+  - develop
 name: Rename SQLServer Database
 
 variables:
   vmImageName: 'ubuntu-latest'
-  SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
-  SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
-  SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
-  Database: 'groomut-db-renamed' # データベース名を設定します
-  RenameDatabase: 'groomut-db' # 変更後データベース名を設定します
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  isRelease: $[contains(variables['System.PullRequest.SourceBranch'], 'refs/heads/release')]
+  isDevelop: $[eq(variables['Build.SourceBranch'], 'refs/heads/develop')]
+  isWork: $[or(contains(variables['System.PullRequest.SourceBranch'], 'refs/heads/fix/'), contains(variables['System.PullRequest.SourceBranch'], 'refs/heads/feature/'))]
 
 pool:
   vmImage: $(vmImageName)
 
-steps:
+# 各ブランチ用変数定義
+job:
+  steps:
+    condition: eq(variables.isMain, true)
+    variables:
+      SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
+      SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
+      SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
+      Database: 'groomut-db-renamed' # データベース名を設定します
+      RenameDatabase: 'groomut-db' # 変更後データベース名を設定します
+    condition: eq(variables.isRelease, true)
+    variables:
+      SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
+      SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
+      SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
+      Database: 'groomut-db-renamed' # データベース名を設定します
+      RenameDatabase: 'groomut-db' # 変更後データベース名を設定します
+    condition: eq(variables.isDevelop, true)
+    variables:
+      SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
+      SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
+      SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
+      Database: 'groomut-db-renamed' # データベース名を設定します
+      RenameDatabase: 'groomut-db' # 変更後データベース名を設定します
+    condition: eq(variables.isWork, true)
+    variables:
+      SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
+      SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
+      SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
+      Database: 'groomut-db-renamed' # データベース名を設定します
+      RenameDatabase: 'groomut-db' # 変更後データベース名を設定します
+    
 # SQLCMDをインストール
-- script: |
-    sudo apt-get update
-    sudo apt-get install -y mssql-tools unixodbc-dev
-    echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
-    source ~/.bashrc
+job:
+  steps:
+  - script: |
+      sudo apt-get update
+      sudo apt-get install -y mssql-tools unixodbc-dev
+      echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+      source ~/.bashrc
 
 # SQL Serverに接続し、DB名変更クエリを実行する
-- script: |
-    sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
+  - script: |
+      sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
