@@ -7,7 +7,7 @@ variables:
   SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
   SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
   SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
-  Database: 'groomut-db-restored' # データベース名を設定します
+  Database: 'groomut-db' # データベース名を設定します
   RenameDatabase: 'groomut-db-renamed' # 変更後データベース名を設定します
 
 pool:
