@@ -20,14 +20,14 @@ pool:
 
 jobs: MainBrancheJob
   condition: eq(variables.isMain, true)
-  steps:
-    env:
+    variables:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
       Database: 'groomut-db' # データベース名を設定します
       RenameDatabase: 'groomut-db-main' # 変更後データベース名を設定します
     # SQLCMDをインストール
+    steps:
     - script: |
       sudo apt-get update
       sudo apt-get install -y mssql-tools unixodbc-dev
@@ -40,13 +40,13 @@ jobs: MainBrancheJob
 
 jobs: ReleaseBrancheJob
   condition: eq(variables.isRelease, true)
-  steps:
-    env:
+    variables:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
       Database: 'groomut-db' # データベース名を設定します
       RenameDatabase: 'groomut-db-release' # 変更後データベース名を設定します
+    steps:
     # SQLCMDをインストール
     - script: |
       sudo apt-get update
@@ -60,13 +60,13 @@ jobs: ReleaseBrancheJob
 
 jobs: DevelopBrancheJob
   condition: eq(variables.isDevelop, true)
-  steps:
-    env:
+    variables:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
       Database: 'groomut-db' # データベース名を設定します
       RenameDatabase: 'groomut-db-develop' # 変更後データベース名を設定します
+    steps:
     # SQLCMDをインストール
     - script: |
       sudo apt-get update
@@ -80,13 +80,13 @@ jobs: DevelopBrancheJob
 
 jobs: WorkBrancheJob
   condition: eq(variables.isWork, true)
-  steps:
-    env:
+    variables:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
       Database: 'groomut-db' # データベース名を設定します
-      RenameDatabase: 'groomut-db-work' # 変更後データベース名を設定します   
+      RenameDatabase: 'groomut-db-work' # 変更後データベース名を設定します
+    steps:
     # SQLCMDをインストール
     - script: |
       sudo apt-get update
