@@ -1,7 +1,9 @@
 # パイプラインを実行するトリガーブランチ名
 trigger:
-  - main
-  - develop
+  branches:
+    include:
+    - main
+    - develop
 name: Rename SQLServer Database
 
 variables:
@@ -15,39 +17,39 @@ pool:
   vmImage: $(vmImageName)
 
 # 各ブランチ用変数定義
-job:
+jobs:
   steps:
     condition: eq(variables.isMain, true)
     variables:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
-      Database: 'groomut-db-renamed' # データベース名を設定します
-      RenameDatabase: 'groomut-db' # 変更後データベース名を設定します
+      Database: 'groomut-db' # データベース名を設定します
+      RenameDatabase: 'groomut-db-main' # 変更後データベース名を設定します
     condition: eq(variables.isRelease, true)
     variables:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
-      Database: 'groomut-db-renamed' # データベース名を設定します
-      RenameDatabase: 'groomut-db' # 変更後データベース名を設定します
+      Database: 'groomut-db' # データベース名を設定します
+      RenameDatabase: 'groomut-db-release' # 変更後データベース名を設定します
     condition: eq(variables.isDevelop, true)
     variables:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
-      Database: 'groomut-db-renamed' # データベース名を設定します
-      RenameDatabase: 'groomut-db' # 変更後データベース名を設定します
+      Database: 'groomut-db' # データベース名を設定します
+      RenameDatabase: 'groomut-db-develop' # 変更後データベース名を設定します
     condition: eq(variables.isWork, true)
     variables:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
-      Database: 'groomut-db-renamed' # データベース名を設定します
-      RenameDatabase: 'groomut-db' # 変更後データベース名を設定します
+      Database: 'groomut-db' # データベース名を設定します
+      RenameDatabase: 'groomut-db-work' # 変更後データベース名を設定します
     
 # SQLCMDをインストール
-job:
+jobs:
   steps:
   - script: |
       sudo apt-get update
