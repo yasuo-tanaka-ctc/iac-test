@@ -20,28 +20,28 @@ pool:
 jobs:
   steps:
     condition: eq(variables.isMain, true)
-    variables:
+    env:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
       Database: 'groomut-db' # データベース名を設定します
       RenameDatabase: 'groomut-db-main' # 変更後データベース名を設定します
     condition: eq(variables.isRelease, true)
-    variables:
+    env:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
       Database: 'groomut-db' # データベース名を設定します
       RenameDatabase: 'groomut-db-release' # 変更後データベース名を設定します
     condition: eq(variables.isDevelop, true)
-    variables:
+    env:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
       Database: 'groomut-db' # データベース名を設定します
       RenameDatabase: 'groomut-db-develop' # 変更後データベース名を設定します
     condition: eq(variables.isWork, true)
-    variables:
+    env:
       SqlServer: 'groomut-dbserver-ctc.database.windows.net' # SQL Serverのホスト名またはIPアドレスを設定します
       SqlUser: 'azureuser' # SQL Serverのユーザー名を設定します
       SqlPassword: 'Passw0rd!' # SQL Serverのパスワードを設定します
@@ -49,8 +49,6 @@ jobs:
       RenameDatabase: 'groomut-db-work' # 変更後データベース名を設定します
     
 # SQLCMDをインストール
-jobs:
-  steps:
   - script: |
       sudo apt-get update
       sudo apt-get install -y mssql-tools unixodbc-dev
