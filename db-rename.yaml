@@ -18,7 +18,7 @@ pool:
 
 # 各ブランチ用job
 
-jobs: Main branche job
+jobs: MainBrancheJob
   condition: eq(variables.isMain, true)
   steps:
     env:
@@ -38,7 +38,7 @@ jobs: Main branche job
     - script: |
       sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
 
-jobs: Release branche job
+jobs: ReleaseBrancheJob
   condition: eq(variables.isRelease, true)
   steps:
     env:
@@ -58,7 +58,7 @@ jobs: Release branche job
     - script: |
       sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
 
-jobs: Develop branche job
+jobs: DevelopBrancheJob
   condition: eq(variables.isDevelop, true)
   steps:
     env:
@@ -78,7 +78,7 @@ jobs: Develop branche job
     - script: |
       sqlcmd -S $(SqlServer) -U $(SqlUser) -P $(SqlPassword) -d master -Q "ALTER DATABASE [$(Database)] MODIFY NAME = [$(RenameDatabase)];"
 
-jobs: Work branche job
+jobs: WorkBrancheJob
   condition: eq(variables.isWork, true)
   steps:
     env:
